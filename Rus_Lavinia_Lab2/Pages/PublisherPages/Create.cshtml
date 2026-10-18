@@ -1,0 +1,16 @@
+@page
+@model Rus_Lavinia_Lab2.Pages.PublisherPages.CreateModel
+
+<h1>Create Publisher</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label>Publisher Name</label>
+       <input asp-for="Publisher.PublisherName" class="form-control" />
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary">
+        Create
+    </button>
+</form>
