@@ -3,38 +3,41 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Rus_Lavinia_Lab2.Models;
 
-namespace Rus_Lavinia_Lab2.Pages.BookPages;
-
-public class DetailsModel : PageModel
+namespace Rus_Lavinia_Lab2.Pages.BookPages
 {
-    private readonly Rus_Lavinia_Lab2Context _context;
-    public DetailsModel(Rus_Lavinia_Lab2Context context)
+    public class DetailsModel : PageModel
     {
-        _context = context;
-    }
+        private readonly Rus_Lavinia_Lab2Context _context;
 
-    public Book Book { get; set; } = default!;
-
-    public async Task<IActionResult> OnGetAsync(int? id)
-    {
-        if (id is null)
+        public DetailsModel(Rus_Lavinia_Lab2Context context)
         {
-            return NotFound();
+            _context = context;
         }
 
-    Book = await _context.Book
-    .Include(b => b.Authors)
-    .Include(b => b.Publisher)
-    .FirstOrDefaultAsync(m => m.ID == id);
-        if (Book is null)
-        {
-            return NotFound();
-        }
-        else
-        {
-            Book = Book;
-        }
+        public Book Book { get; set; } = default!;
 
-        return Page();
+        public async Task<IActionResult> OnGetAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var book = await _context.Book
+                .Include(b => b.Publisher)
+                .Include(b => b.BookCategories)
+                    .ThenInclude(bc => bc.Category)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(m => m.ID == id);
+
+            if (book == null)
+            {
+                return NotFound();
+            }
+
+            Book = book;
+
+            return Page();
+        }
     }
 }

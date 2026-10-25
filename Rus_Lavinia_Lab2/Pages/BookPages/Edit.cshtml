@@ -9,65 +9,116 @@
 
 <h4>Book</h4>
 <hr />
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
+
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger"></div>
+
             <input type="hidden" asp-for="Book.ID" />
-            <div class="form-group">
-                <label asp-for="Book.Title" class="control-label"></label>
-                <input asp-for="Book.Title" class="form-control" />
-                <span asp-validation-for="Book.Title" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="Book.Title"
+                       class="control-label"></label>
+
+                <input asp-for="Book.Title"
+                       class="form-control" />
+
+                <span asp-validation-for="Book.Title"
+                      class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Book.Author" class="control-label"></label>
-                <input asp-for="Book.Author" class="form-control" />
-                <span asp-validation-for="Book.Author" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="Book.Author"
+                       class="control-label"></label>
+
+                <input asp-for="Book.Author"
+                       class="form-control" />
+
+                <span asp-validation-for="Book.Author"
+                      class="text-danger"></span>
             </div>
-            <div class="form-group">
- <label asp-for="Book.PublishingDate" class="control-label"></label>
- <input asp-for="Book.PublishingDate" class="form-control" />
- <span asp-validation-for="Book.PublishingDate" class="textdanger"></span>
-</div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Book.Price"
+                       class="control-label"></label>
+
+                <input asp-for="Book.Price"
+                       class="form-control" />
+
+                <span asp-validation-for="Book.Price"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Book.PublishingDate"
+                       class="control-label"></label>
+
+                <input asp-for="Book.PublishingDate"
+                       class="form-control"
+                       type="date" />
+
+                <span asp-validation-for="Book.PublishingDate"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Book.PublisherID"
+                       class="control-label">
+                    Publisher
+                </label>
+
+                <select asp-for="Book.PublisherID"
+                        class="form-control"
+                        asp-items="ViewBag.PublisherID">
+                    <option value="">Select Publisher</option>
+                </select>
+
+                <span asp-validation-for="Book.PublisherID"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">
+                    Categories
+                </label>
+
+                <div class="row">
+                    @foreach (var cat in Model.AssignedCategoryDataList)
+                    {
+                        <div class="col-md-4 mb-2">
+                            <label>
+                                <input type="checkbox"
+                                       name="selectedCategories"
+                                       value="@cat.CategoryID"
+                                       checked="@cat.Assigned" />
+
+                                @cat.CategoryID @cat.Name
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
 
             <div class="form-group">
-                <label asp-for="Book.Price" class="control-label"></label>
-                <input asp-for="Book.Price" class="form-control" />
-                <span asp-validation-for="Book.Price" class="text-danger"></span>
+                <input type="submit"
+                       value="Save"
+                       class="btn btn-primary" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-            <div class="form-group">
-    <label asp-for="Book.PublisherID" class="control-label"></label>
-    <select asp-for="Book.PublisherID"
-            class="form-control"
-            asp-items="ViewBag.PublisherID">
-        <option value="">Selectează editura</option>
-    </select>
-    <span asp-validation-for="Book.PublisherID"
-          class="text-danger"></span>
-</div>
-<div class="form-group">
-    <label asp-for="Book.AuthorsID" class="control-label">
-        Author
-    </label>
-    <select asp-for="Book.AuthorsID"
-            class="form-control"
-            asp-items="ViewBag.AuthorsID">
-        <option value="">Selectează autorul</option>
-    </select>
-    <span asp-validation-for="Book.AuthorsID"
-          class="text-danger"></span>
-</div>
+
         </form>
     </div>
 </div>
 
-<div>
+<div class="mt-3">
     <a asp-page="./Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

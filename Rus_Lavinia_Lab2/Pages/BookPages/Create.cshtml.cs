@@ -1,47 +1,63 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Rus_Lavinia_Lab2.Models;
 
-namespace Rus_Lavinia_Lab2.Pages.BookPages;
-
-public class CreateModel : PageModel
+namespace Rus_Lavinia_Lab2.Pages.BookPages
 {
-    private readonly Rus_Lavinia_Lab2Context _context;
-
-    public CreateModel(Rus_Lavinia_Lab2Context context)
+    public class CreateModel : BookCategoriesPageModel
     {
-        _context = context;
-    }
+        private readonly Rus_Lavinia_Lab2Context _context;
 
-    public IActionResult OnGet()
-    {
-        return Page();
-    }
-
-    [BindProperty]
-    public Book Book { get; set; } = default!;
-
-    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD.
-    public async Task<IActionResult> OnPostAsync()
-    {
-        if (!ModelState.IsValid)
+        public CreateModel(Rus_Lavinia_Lab2Context context)
         {
-            ViewData["AuthorsID"] = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(
-    _context.Authors.Select(a => new
-    {
-        a.ID,
-        FullName = a.FirstName + " " + a.LastName
-    }),
-    "ID",
-    "FullName"
-);
+            _context = context;
+        }
+
+        public IActionResult OnGet()
+        {
+            ViewData["PublisherID"] = new SelectList(
+                _context.Publisher,
+                "ID",
+                "PublisherName");
+
+            var book = new Book();
+            book.BookCategories = new List<BookCategory>();
+
+            PopulateAssignedCategoryData(_context, book);
+
             return Page();
         }
 
-        _context.Book.Add(Book);
-        await _context.SaveChangesAsync();
+        [BindProperty]
+        public Book Book { get; set; } = default!;
 
-        return RedirectToPage("./Index");
+        public async Task<IActionResult> OnPostAsync(
+            string[] selectedCategories)
+        {
+            var newBook = new Book();
+
+            if (selectedCategories != null)
+            {
+                newBook.BookCategories = new List<BookCategory>();
+
+                foreach (var cat in selectedCategories)
+                {
+                    var catToAdd = new BookCategory
+                    {
+                        CategoryID = int.Parse(cat)
+                    };
+
+                    newBook.BookCategories.Add(catToAdd);
+                }
+            }
+
+            Book.BookCategories = newBook.BookCategories;
+
+            _context.Book.Add(Book);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
+        }
     }
 }

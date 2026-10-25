@@ -8,8 +8,8 @@ namespace Rus_Lavinia_Lab2.Models
         public int ID { get; set; }
 
         [Display(Name = "Book Title")]
-        public required string Title { get; set; }
-        public required string Author { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Author { get; set; } = string.Empty;
         public int? AuthorsID { get; set; }
 
         public Authors? Authors { get; set; }
@@ -20,6 +20,7 @@ namespace Rus_Lavinia_Lab2.Models
         public DateTime PublishingDate { get; set; }
         public int? PublisherID { get; set; }
         public Publisher? Publisher { get; set; }
+        public ICollection<BookCategory>? BookCategories { get; set; }
     }
 }
 
