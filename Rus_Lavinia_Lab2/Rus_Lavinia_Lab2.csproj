@@ -26,5 +26,8 @@
     <Folder Include="Pages\BookPages\Publisher\" />
     <Folder Include="Pages\AuthorsPages\" />
   </ItemGroup>
-
+	<ItemGroup>
+		<Compile Remove="**\bin\**\*.cs" />
+		<Compile Remove="**\obj\**\*.cs" />
+	</ItemGroup>
 </Project>

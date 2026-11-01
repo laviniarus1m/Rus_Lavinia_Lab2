@@ -12,18 +12,41 @@
 </p>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>Book Title</th>
-            <th>Author</th>
-            <th>Price</th>
-            <th>Publishing Date</th>
-            <th>Publisher</th>
-            <th>Book Categories</th>
-            <th></th>
-        </tr>
-    </thead>
+   <thead>
+    <tr>
+        <th>
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.TitleSort">
+                @Html.DisplayNameFor(model => model.Book[0].Title)
+            </a>
+        </th>
 
+        <th>
+            @Html.DisplayNameFor(model => model.Book[0].Price)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Book[0].PublishingDate)
+        </th>
+
+        <th colspan="2">
+            <a asp-page="./Index"
+               asp-route-sortOrder="@Model.AuthorSort">
+                @Html.DisplayNameFor(model => model.Book[0].Author)
+            </a>
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Book[0].Publisher)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Book[0].BookCategories)
+        </th>
+
+        <th></th>
+    </tr>
+</thead>
     <tbody>
         @foreach (var item in Model.BookD.Books)
         {
