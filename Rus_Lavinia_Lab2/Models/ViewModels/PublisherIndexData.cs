@@ -1,7 +1,7 @@
-﻿
+
 using Rus_Lavinia_Lab2.Models;
 
-namespace Nume_Pren_Lab2.ViewModels
+namespace Rus_Lavinia_Lab2.Models.ViewModels
 {
     public class PublisherIndexData
     {

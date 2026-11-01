@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Nume_Pren_Lab2.ViewModels;
+using Rus_Lavinia_Lab2.Models.ViewModels;
 using Rus_Lavinia_Lab2.Models;
 
 
@@ -30,7 +30,6 @@ namespace Rus_Lavinia_Lab2.Pages.PublisherPages
 
             PublisherData.Publishers = await _context.Publisher
                 .Include(i => i.Books)
-                .ThenInclude(c => c.Author)
                 .OrderBy(i => i.PublisherName)
                 .ToListAsync();
 

@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Rus_Lavinia_Lab2.Models;
@@ -14,10 +13,28 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public IList<Category> Category { get; set; } = default!;
+    public IList<Category> Category { get; set; } = new List<Category>();
+    public int? CategoryID { get; set; }
+    public IEnumerable<Book> Books { get; set; } = Enumerable.Empty<Book>();
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(int? id)
     {
-        Category = await _context.Category.ToListAsync();
+        CategoryID = id;
+        Category = await _context.Category
+            .AsNoTracking()
+            .OrderBy(c => c.CategoryName)
+            .ToListAsync();
+
+        if (id.HasValue)
+        {
+            Books = await _context.BookCategory
+                .AsNoTracking()
+                .Where(bc => bc.CategoryID == id.Value)
+                .Include(bc => bc.Book)
+                    .ThenInclude(b => b.Authors)
+                .Select(bc => bc.Book)
+                .OrderBy(b => b.Title)
+                .ToListAsync();
+        }
     }
 }

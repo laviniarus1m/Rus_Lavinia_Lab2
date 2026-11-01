@@ -49,7 +49,7 @@
     <h3>Books Edited by Selected Publisher</h3>
 
     <table class="table">
-        @foreach (var item in Model.PublisherData.Publishers)
+        @foreach (var item in Model.PublisherData.Publishers.Where(p => p.ID == Model.PublisherID))
         {
             string selectedRow = "";
 
