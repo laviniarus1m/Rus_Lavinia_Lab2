@@ -9,4 +9,9 @@ public class Rus_Lavinia_Lab2Context(DbContextOptions<Rus_Lavinia_Lab2Context> o
     public DbSet<Category> Category { get; set; } = default!;
 
     public DbSet<BookCategory> BookCategory { get; set; } = default!;
+
+    public DbSet<Rus_Lavinia_Lab2.Models.Member> Member { get; set; } = default!;
+
+    public DbSet<Rus_Lavinia_Lab2.Models.Borrowing> Borrowing { get; set; } = default!;
+
 }
