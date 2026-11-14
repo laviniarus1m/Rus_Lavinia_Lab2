@@ -126,6 +126,11 @@ namespace Rus_Lavinia_Lab2.Areas.Identity.Pages.Account
                 _logger.LogInformation(
                     "User created a new account with password.");
 
+                // Laborator 6 - Punctul 7
+                // Atribuim automat rolul User
+                var role = await _userManager.AddToRoleAsync(
+                    user, "User");
+
                 // Salvam automat emailul in tabelul Member
                 var existingMember = await _context.Member
                     .AnyAsync(m => m.Email == Input.Email);

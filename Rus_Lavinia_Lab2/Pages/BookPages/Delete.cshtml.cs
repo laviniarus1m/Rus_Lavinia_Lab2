@@ -1,10 +1,13 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Rus_Lavinia_Lab2.Models;
 
 namespace Rus_Lavinia_Lab2.Pages.BookPages;
 
+[Authorize(Roles = "Admin")]
 public class DeleteModel : PageModel
 {
     private readonly Rus_Lavinia_Lab2Context _context;

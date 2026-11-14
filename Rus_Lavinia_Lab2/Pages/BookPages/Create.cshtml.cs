@@ -1,9 +1,12 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 using Rus_Lavinia_Lab2.Models;
 
 namespace Rus_Lavinia_Lab2.Pages.BookPages
 {
+    [Authorize(Roles = "Admin")]
     public class CreateModel : BookCategoriesPageModel
     {
         private readonly Rus_Lavinia_Lab2Context _context;

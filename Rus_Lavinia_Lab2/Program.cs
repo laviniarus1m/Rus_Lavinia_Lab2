@@ -11,29 +11,53 @@ var connectionString = builder.Configuration.GetConnectionString(
     ?? throw new InvalidOperationException(
         "Connection string 'Rus_Lavinia_Lab2Context' not found.");
 
+// Punctul 11 - Politica de autorizare Admin
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy =>
+        policy.RequireRole("Admin"));
+});
+
 // Configurarea Razor Pages
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    // Punctele 3 si 4 - Books
+    options.Conventions.AuthorizeFolder("/BookPages");
+
+    options.Conventions.AllowAnonymousToPage("/BookPages/Index");
+    options.Conventions.AllowAnonymousToPage("/BookPages/Details");
+
+    // Punctul 11 - Members
+    options.Conventions.AuthorizeFolder(
+        "/Members", "AdminPolicy");
+
+    // Sarcina finala 1 - Publishers si Categories
+    options.Conventions.AuthorizeFolder(
+        "/Publishers", "AdminPolicy");
+
+    options.Conventions.AuthorizeFolder(
+        "/Categories", "AdminPolicy");
+});
 
 // Contextul bazei de date pentru biblioteca
 builder.Services.AddDbContext<Rus_Lavinia_Lab2Context>(options =>
     options.UseSqlServer(connectionString));
 
-// Contextul pentru Identity
+// Contextul bazei de date pentru Identity
 builder.Services.AddDbContext<LibraryIdentityContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Configurarea Identity pentru Register si Login
+// Punctul 5 - Identity cu roluri
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-    // Dezactivam temporar confirmarea pentru testarea locala
     options.SignIn.RequireConfirmedAccount = false;
     options.SignIn.RequireConfirmedEmail = false;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<LibraryIdentityContext>();
 
 var app = builder.Build();
 
-// Configurarea aplicatiei
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -45,14 +69,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Autentificare si autorizare
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Fisiere statice
 app.MapStaticAssets();
 
-// Activarea paginilor Razor
 app.MapRazorPages()
    .WithStaticAssets();
 

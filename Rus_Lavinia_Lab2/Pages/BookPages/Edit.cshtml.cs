@@ -1,11 +1,14 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Rus_Lavinia_Lab2;
 using Rus_Lavinia_Lab2.Models;
 
 namespace Rus_Lavinia_Lab2.Pages.BookPages
 {
+    [Authorize(Roles = "Admin")]
     public class EditModel : BookCategoriesPageModel
     {
         private readonly Rus_Lavinia_Lab2Context _context;
